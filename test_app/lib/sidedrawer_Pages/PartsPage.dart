@@ -238,10 +238,12 @@ class _PartsPageState extends State<PartsPage> {
         _filteredParts = List.from(_quranParts);
       } else {
         _filteredParts = _quranParts
-            .where((part) =>
-                part['name'].contains(query) ||
-                part['startSurah'].contains(query) ||
-                part['endSurah'].contains(query))
+            .where(
+              (part) =>
+                  part['name'].contains(query) ||
+                  part['startSurah'].contains(query) ||
+                  part['endSurah'].contains(query),
+            )
             .toList();
       }
     });
@@ -263,7 +265,7 @@ class _PartsPageState extends State<PartsPage> {
           style: const TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
-            color: Color.fromARGB(255, 186, 198, 186),
+            color: Color.fromARGB(255, 147, 166, 196),
           ),
         ),
         content: Column(
@@ -277,7 +279,7 @@ class _PartsPageState extends State<PartsPage> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 77, 83, 78),
+                color: const Color.fromARGB(255, 165, 204, 224),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
@@ -289,7 +291,7 @@ class _PartsPageState extends State<PartsPage> {
                       // Navigate to PDF/reading page
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 193, 207, 194),
+                      backgroundColor: const Color.fromARGB(255, 140, 184, 216),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -330,10 +332,7 @@ class _PartsPageState extends State<PartsPage> {
         children: [
           Text(
             value,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
           ),
           Text(
             label,
@@ -368,13 +367,17 @@ class _PartsPageState extends State<PartsPage> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.search,
-                color: Color.fromARGB(221, 133, 129, 129)),
+            icon: const Icon(
+              Icons.search,
+              color: Color.fromARGB(221, 236, 226, 226),
+            ),
             onPressed: () {
               showSearch(
                 context: context,
-                delegate:
-                    PartsSearchDelegate(_quranParts, _navigateToPartDetails),
+                delegate: PartsSearchDelegate(
+                  _quranParts,
+                  _navigateToPartDetails,
+                ),
               );
             },
           ),
@@ -392,17 +395,14 @@ class _PartsPageState extends State<PartsPage> {
               textDirection: TextDirection.rtl,
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.search,
-              style: const TextStyle(
-                fontSize: 18,
-                height: 1.5,
-              ),
+              style: const TextStyle(fontSize: 18, height: 1.5),
               decoration: InputDecoration(
                 hintText: 'ابحث عن جزء...',
-                hintStyle: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey,
+                hintStyle: const TextStyle(fontSize: 16, color: Colors.grey),
+                prefixIcon: const Icon(
+                  Icons.search,
+                  color: Color.fromARGB(255, 171, 189, 222),
                 ),
-                prefixIcon: const Icon(Icons.search, color: Colors.grey),
                 suffixIcon: _searchController.text.isNotEmpty
                     ? IconButton(
                         icon: const Icon(Icons.clear, color: Colors.grey),
@@ -419,12 +419,15 @@ class _PartsPageState extends State<PartsPage> {
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide(
-                      color: const Color.fromARGB(255, 142, 135, 135)),
+                    color: const Color.fromARGB(255, 142, 135, 135),
+                  ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: const BorderSide(
-                      color: Color.fromARGB(255, 19, 19, 19), width: 2),
+                    color: Color.fromARGB(255, 19, 19, 19),
+                    width: 2,
+                  ),
                 ),
                 filled: true,
                 fillColor: Colors.grey.shade100,
@@ -449,17 +452,11 @@ class _PartsPageState extends State<PartsPage> {
               children: [
                 Text(
                   'عدد الأجزاء: ${_filteredParts.length}',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey.shade600,
-                  ),
+                  style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
                 ),
                 Text(
                   'الأجزاء',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey.shade600,
-                  ),
+                  style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
                 ),
               ],
             ),
@@ -474,8 +471,10 @@ class _PartsPageState extends State<PartsPage> {
                 final partNumber = part['id'];
 
                 return Card(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
                   elevation: 2,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -564,7 +563,9 @@ class _PartsPageState extends State<PartsPage> {
         height: 50,
         decoration: BoxDecoration(
           color: Color.fromARGB(255, 2, 3, 2),
-          border: Border(top: BorderSide(color: Colors.green.shade100)),
+          border: Border(
+            top: BorderSide(color: const Color.fromARGB(255, 163, 196, 206)),
+          ),
         ),
         child: Center(
           child: RichText(
@@ -575,7 +576,7 @@ class _PartsPageState extends State<PartsPage> {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 193, 206, 194),
+                    color: Color.fromARGB(255, 107, 109, 145),
                   ),
                 ),
                 TextSpan(
@@ -629,10 +630,12 @@ class PartsSearchDelegate extends SearchDelegate<String> {
   @override
   Widget buildResults(BuildContext context) {
     final results = parts
-        .where((part) =>
-            part['name'].contains(query) ||
-            part['startSurah'].contains(query) ||
-            part['endSurah'].contains(query))
+        .where(
+          (part) =>
+              part['name'].contains(query) ||
+              part['startSurah'].contains(query) ||
+              part['endSurah'].contains(query),
+        )
         .toList();
 
     return ListView.builder(
@@ -679,11 +682,13 @@ class PartsSearchDelegate extends SearchDelegate<String> {
     final suggestions = query.isEmpty
         ? parts.take(10).toList()
         : parts
-            .where((part) =>
-                part['name'].contains(query) ||
-                part['startSurah'].contains(query) ||
-                part['endSurah'].contains(query))
-            .toList();
+              .where(
+                (part) =>
+                    part['name'].contains(query) ||
+                    part['startSurah'].contains(query) ||
+                    part['endSurah'].contains(query),
+              )
+              .toList();
 
     return ListView.builder(
       itemCount: suggestions.length,

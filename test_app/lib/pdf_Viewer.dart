@@ -9,8 +9,10 @@ class PdfViewerPage extends StatefulWidget {
 }
 
 class _PdfViewerPageState extends State<PdfViewerPage> {
-  late PdfControllerPinch _pdfController;
+  PdfControllerPinch? _pdfController;
   bool _isLoading = true;
+  int _totalPages = 0;
+  int _currentPage = 1;
 
   @override
   void initState() {
@@ -19,26 +21,86 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
   }
 
   Future<void> _loadPdf() async {
-    _pdfController = PdfControllerPinch(
-      document: PdfDocument.openAsset('assets/pdf/pdf1.pdf'),
-    );
+    try {
+      final document = await PdfDocument.openAsset('assets/pdf/pdf1.pdf');
+
+      _pdfController = PdfControllerPinch(
+        document: PdfDocument.openAsset('assets/pdf/pdf1.pdf'),
+      );
+
+      _totalPages = document.pagesCount;
+
+      _pdfController!.addListener(() {
+        final page = _pdfController!.page;
+        if (page != null) {
+          final newPage = page.floor() + 1;
+          if (newPage != _currentPage) {
+            setState(() {
+              _currentPage = newPage;
+            });
+          }
+        }
+      });
+
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (e) {
+      debugPrint('Error loading PDF: $e');
+    }
+  }
+
+  Future<void> navigateToPage(int pageNumber) async {
+    if (_pdfController == null) return;
+
+    if (pageNumber < 1 || pageNumber > _totalPages) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Page number must be between 1 and $_totalPages'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    _pdfController!.jumpToPage(pageNumber - 1);
+
     setState(() {
-      _isLoading = false;
+      _currentPage = pageNumber;
     });
   }
 
   @override
   void dispose() {
-    _pdfController.dispose();
+    _pdfController?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return _isLoading
-        ? const Center(child: CircularProgressIndicator())
-        : PdfViewPinch(
-            controller: _pdfController,
-          );
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    return Stack(
+      children: [
+        PdfViewPinch(controller: _pdfController!),
+        Positioned(
+          bottom: 16,
+          right: 16,
+          child: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.black54,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Text(
+              '$_currentPage / $_totalPages',
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
